@@ -1,16 +1,18 @@
-#include "testclass.hpp"
+#include "rsa.hpp"
 int main() {
-	BinarySearchTree<int> obj;
-	try {
-		if (obj.fileIn("testin.txt") == 1)
-			throw "Can't open the file";
-	}
-	catch (const char* msg) {
-		cout << msg << endl;
-	}
-	obj.remove(16);
-	obj.paintTree();
-	obj.Out("testout.txt");
-	system("pause");
+	Rsa rsa; // объявление переменной класса RSA (делают оба человека)
+
+// генерация ключей и шифрование сообщения
+	Key keys = rsa.produce_keys(); // генерация ключей (делает только тот, кто принимает)
+
+// ......отправка ключей.........
+
+	long crypt = 9635; // сообщение 
+	crypt = rsa.endecrypt(crypt,keys.ekey,keys.pkey); // шифрование 
+// 						    (сообщение, экспонента, публичный ключ) 
+
+	crypt = rsa.endecrypt(crypt,keys.dkey,keys.pkey); // расшифровка 
+//                    (зашифр. сообщение, приватный, публичный)
+
 	return 0;
 }
