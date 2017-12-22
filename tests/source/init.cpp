@@ -29,7 +29,8 @@ SCENARIO("check every uniCODE")
 		mess = char_codes.at(i);
 		res = 0;
 		int carry = powm(mess, e, p, res);
-		crypted_codes.push_back(res);
+		int res_int = res.ToInt();
+		crypted_codes.push_back(res_int);
 	}
 	
 	std::vector<int> decrypted_codes;
@@ -38,7 +39,8 @@ SCENARIO("check every uniCODE")
 		mess = crypted_codes.at(i);
 		res = 0;
 		int carry = powm(mess, d, p, res);
-		decrypted_codes.push_back(res);
+		int res_int = res.ToInt();
+		decrypted_codes.push_back(res_int);
 	}
 	
 	REQUIRE (char_codes == decrypted_codes);
