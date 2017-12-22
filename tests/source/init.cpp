@@ -29,7 +29,7 @@ SCENARIO("check every uniCODE")
 		mess = char_codes.at(i);
 		res = 0;
 		int carry = powm(mess, e, p, res);
-		int res_int = res.ToInt();
+		int res_int = res.ToUInt();
 		crypted_codes.push_back(res_int);
 	}
 	
@@ -39,7 +39,7 @@ SCENARIO("check every uniCODE")
 		mess = crypted_codes.at(i);
 		res = 0;
 		int carry = powm(mess, d, p, res);
-		int res_int = res.ToInt();
+		int res_int = res.ToUInt();
 		decrypted_codes.push_back(res_int);
 	}
 	
