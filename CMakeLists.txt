@@ -4,7 +4,7 @@ project (RSA_MODULE)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/rsa.hpp)
+set(HEADERS ${PROJECT_SOURCE_DIR}/include/rsa.h)
 set(HEADERS ${PROJECT_SOURCE_DIR}/include/catch.hpp)
 set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmath.h)
 set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathbig.h)

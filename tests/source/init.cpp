@@ -1,4 +1,4 @@
-#include <rsa.hpp>
+#include <rsa.h>
 #include <catch.hpp>
 #include <ttmath.h>
 #include <vector>
