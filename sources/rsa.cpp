@@ -85,8 +85,7 @@ MyInt Rsa::produce_ekey(const MyInt orla)
 	MyInt ekey;
 	while (true)
 	{
-		ttmath::ulint tmp = llrand();
-		MyInt rand_big = tmp;
+		MyInt rand_big = llrand();
 		ekey = rand_big % orla;
 		if (ekey >= 2 && produce_gcd(ekey, orla) == 1)
 			break;
