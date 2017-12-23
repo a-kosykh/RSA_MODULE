@@ -85,7 +85,7 @@ MyInt Rsa::produce_ekey(const MyInt orla)
 	MyInt ekey;
 	while (true)
 	{
-		MyInt rand_big = llrand();
+		MyInt rand_big(llrand());
 		ekey = rand_big % orla;
 		if (ekey >= 2 && produce_gcd(ekey, orla) == 1)
 			break;
