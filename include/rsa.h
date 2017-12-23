@@ -1,11 +1,16 @@
 #pragma once
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+#include "ttmath.h"
+
+typedef ttmath::UInt<64> MyInt;
+
 typedef struct key
 {
-	long pkey;
-	long ekey;
-	long dkey;
+	MyInt pkey;
+	MyInt ekey;
+	MyInt dkey;
 } Key;
 
 class Rsa
@@ -19,13 +24,13 @@ public:
 	long endecrypt(const long msg, const long key, const long pkey);
 
 private:
-	long produce_pkey(const long prime1, const long prime2);
-	long produce_ekey(const long orla);
-	long produce_dkey(const long ekey, const long orla);
-	long produce_prime();
-	long produce_orla(const long prime1, const long prime2);
-	long produce_gcd(const long a, const long b);
-	bool is_prime(const long digit);
+	MyInt produce_pkey(const MyInt prime1, const MyInt prime2);
+	MyInt produce_ekey(const MyInt orla);
+	MyInt produce_dkey(const MyInt ekey, const MyInt orla);
+	MyInt produce_prime();
+	MyInt produce_orla(const MyInt prime1, const MyInt prime2);
+	MyInt produce_gcd(const MyInt a, const MyInt b);
+	bool is_prime(const MyInt digit);
 };
 
 template<typename Integer>
