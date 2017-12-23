@@ -1,6 +1,5 @@
 #include <rsa.h>
 #include <catch.hpp>
-#include <ttmath.h>
 #include <vector>
 
 SCENARIO("check every uniCODE")
