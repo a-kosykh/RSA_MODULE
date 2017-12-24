@@ -1,4 +1,5 @@
 #include "rsa.h"
+#include "ttmath.h"
 
 typedef ttmath::UInt<64> MyInt;
 

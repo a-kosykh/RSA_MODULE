@@ -1,34 +1,63 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8)
 
-project (RSA_MODULE)
+include("cmake/HunterGate.cmake")
+HunterGate(
+      URL "https://github.com/ruslo/hunter/archive/v0.19.123.tar.gz"
+      SHA1 "57d07480686f82ddc916a5980b4f2a18e5954c2b"
+)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+project(RSA_MODULE)
+set(RSA_MODULE_VERSION_MAJOR 0)
+set(RSA_MODULE_VERSION_MINOR 1)
+set(RSA_MODULE_VERSION_PATCH 0)
+set(RSA_MODULE_VERSION_TWEAK 0)
+set(RSA_MODULE_VERSION ${RSA_MODULE_E_VERSION_MAJOR}.${RSA_MODULE_VERSION_MINOR}.${RSA_MODULE_project_VERSION_PATCH}.${RSA_MODULE_VERSION_TWEAK})
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/rsa.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/catch.hpp)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmath.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathbig.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathdec.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathint.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathmisc.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathobjects.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathparser.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmaththreads.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathtypes.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathuint.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathuint_noasm.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathuint_x86.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathuint_x86_64.h)
-set(HEADERS ${PROJECT_SOURCE_DIR}/include/ttmathuint_x86_64_msvc.asm)
-set(SOURCES ${PROJECT_SOURCE_DIR}/sources/rsa.cpp)
+option(BUILD_TESTS "Build tests" OFF)
+option(BUILD_EXAMPLES "Build Examples" OFF)
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+add_library(${PROJECT_NAME} INTERFACE)
+target_include_directories(${PROJECT_NAME} INTERFACE 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>  
+    $<INSTALL_INTERFACE:include>
+)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+if(BUILD_TESTS)
+  hunter_add_package(Catch)
+  find_package(Catch CONFIG REQUIRED)
 
+  enable_testing()
 
-add_library (${PROJECT_NAME} STATIC ${SOURCES})
+  file(GLOB ${PROJECT_NAME}_TEST_SOURCES tests/*.cpp)
+  add_executable(tests ${${PROJECT_NAME}_TEST_SOURCES})
+  target_link_libraries(tests ${PROJECT_NAME} Catch::Catch )
 
-add_subdirectory(example)
-add_subdirectory(tests)
+  add_test(NAME test_name COMMAND tests "-s" "-r" "compact" "--use-colour" "yes") 
+endif()
+
+if(BUILD_EXAMPLES)
+    file(GLOB EXAMPLE_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp")
+    foreach(EXAMPLE_SOURCE ${EXAMPLE_SOURCES})
+        get_filename_component(EXAMPLE_NAME ${EXAMPLE_SOURCE} NAME_WE)
+        set(EXAMPLE_TARGET_NAME example_${EXAMPLE_NAME})
+        add_executable(${EXAMPLE_TARGET_NAME} ${EXAMPLE_SOURCE})
+        target_link_libraries(${EXAMPLE_TARGET_NAME} ${PROJECT_NAME})
+        set_target_properties(${EXAMPLE_TARGET_NAME} PROPERTIES OUTPUT_NAME ${EXAMPLE_NAME})
+        install(TARGETS ${EXAMPLE_TARGET_NAME}
+                RUNTIME DESTINATION bin
+                )
+    endforeach(EXAMPLE_SOURCE ${EXAMPLE_SOURCES})
+endif()
+
+install(TARGETS RSA_MODULE
+    EXPORT RSA_MODULE-config
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION include)
+install(EXPORT RSA_MODULE-config DESTINATION cmake)
+
+include(CPackConfig.cmake)
