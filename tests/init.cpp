@@ -2,7 +2,7 @@
 #include <vector>
 #include "rsa.h"
 
-SCENARIO("check every uniCODE")
+TEST_CASE("check every uniCODE")
 {
 	MyInt bignum = "666666666666666666666";
 	MyInt message, result;
