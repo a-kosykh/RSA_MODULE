@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include "ttmath.h"
+#include "ttmath_header.h"
 
 typedef ttmath::UInt<64> MyInt;
 
