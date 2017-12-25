@@ -1,5 +1,6 @@
 #include <catch.hpp>
 #include <vector>
+#include "ttmath_header.h"
 #include "rsa.h"
 
 TEST_CASE("check every uniCODE")
